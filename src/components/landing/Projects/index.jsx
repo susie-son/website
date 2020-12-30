@@ -11,17 +11,17 @@ export const Projects = () => {
   const {
     github: {
       viewer: {
-        repositories: { edges },
-      },
-    },
+        pinnedItems: { nodes }
+      }
+    }
   } = useStaticQuery(
     graphql`
       {
         github {
           viewer {
-            repositories(first: 8, orderBy: { field: STARGAZERS, direction: DESC }) {
-              edges {
-                node {
+            pinnedItems(first: 6, types: REPOSITORY) {
+              nodes {
+                ... on GitHub_Repository {
                   id
                   name
                   url
@@ -48,28 +48,28 @@ export const Projects = () => {
     <Wrapper as={Container} id="projects">
       <h2>Projects</h2>
       <Grid>
-        {edges.map(({ node }) => (
-          <Item key={node.id} as="a" href={node.url} target="_blank" rel="noopener noreferrer" theme={theme}>
+        {nodes.map((repository) => (
+          <Item key={repository.id} as="a" href={repository.url} target="_blank" rel="noopener noreferrer" theme={theme}>
             <Card theme={theme}>
               <Content>
-                <h4>{node.name}</h4>
-                <p>{node.description}</p>
+                <h4>{repository.name}</h4>
+                <p>{repository.description}</p>
               </Content>
               <TitleWrap>
                 <Stats theme={theme}>
                   <div>
                     <Star color={theme === "light" ? "#000" : "#fff"} />
-                    <span>{node.stargazers.totalCount}</span>
+                    <span>{repository.stargazers.totalCount}</span>
                   </div>
                   <div>
                     <Fork color={theme === "light" ? "#000" : "#fff"} />
-                    <span>{node.forkCount}</span>
+                    <span>{repository.forkCount}</span>
                   </div>
                 </Stats>
                 <Stats theme={theme}>
                   <Languages>
                     {
-                      node.languages.nodes.map(({ id, name }) => (
+                      repository.languages.nodes.map(({ id, name }) => (
                         <span key={id}>
                           {name}
                         </span>
