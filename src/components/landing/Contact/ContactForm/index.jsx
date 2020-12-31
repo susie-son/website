@@ -102,7 +102,7 @@ export default () => (
         {values.success && (
           <InputField>
             <Center>
-              <h4>Your message has been successfully sent, I will get back to you ASAP!</h4>
+              <h4>Thanks for your message, I'll get back to you soon!</h4>
             </Center>
           </InputField>
         )}
